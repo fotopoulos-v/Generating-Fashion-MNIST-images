@@ -11,6 +11,8 @@ from models import vae_decoder
 
 app = Flask(__name__)
 
+latent_dim = 10
+
 def encode_image(image_tensor):
     image_array = (image_tensor.numpy().squeeze() * 127.5 + 127.5).astype(np.uint8)
     image = Image.fromarray(image_array, mode="L").resize((280, 280))
@@ -27,18 +29,18 @@ def index():
 def generate(model_type):
     noise = tf.random.normal([1, latent_dim])
 
-    if model_type == "gan":
-        image = gan_generator(noise, training=False)
-        img_b64 = encode_image(image)
-    elif model_type == "dcgan":
-        image = dcgan_generator(noise, training=False)
-        img_b64 = encode_image(image)
-    elif model_type == "vae":
+    if model_type == "vae":
         image = vae_decoder(noise, training=False)
         img_b64 = encode_image(image)
-    elif model_type == "diffusion":
-        images, _, _ = sample_diffusion(diffusion_model, batch_size=1)
-        img_b64 = encode_image(tf.convert_to_tensor(images[0]))
+    # elif model_type == "dcgan":
+    #     image = dcgan_generator(noise, training=False)
+    #     img_b64 = encode_image(image)
+    # elif  model_type == "gan":
+    #     image = gan_generator(noise, training=False)
+    #     img_b64 = encode_image(image)
+    # elif model_type == "diffusion":
+    #     images, _, _ = sample_diffusion(diffusion_model, batch_size=1)
+    #     img_b64 = encode_image(tf.convert_to_tensor(images[0]))
     else:
         return jsonify({"error": "Invalid model type"}), 400
 
