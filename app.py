@@ -7,11 +7,11 @@ from io import BytesIO
 import base64
 from models import vae_decoder
 
-
+latent_dim = 10 
 
 app = Flask(__name__)
 
-latent_dim = 10
+
 
 def encode_image(image_tensor):
     image_array = (image_tensor.numpy().squeeze() * 127.5 + 127.5).astype(np.uint8)
