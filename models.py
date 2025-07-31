@@ -9,6 +9,7 @@ x = tf.keras.layers.Dense(28 * 28, name="dense_2")(x)
 outputs = tf.keras.layers.Reshape([28, 28])(x)
 
 vae_decoder = tf.keras.Model(decoder_inputs, outputs)
+vae_decoder(tf.zeros((1, codings_size)))  # builds the model by running a dummy input
 vae_decoder.load_weights("static/assets/keras/vae_decoder.weights.h5")
 
 
