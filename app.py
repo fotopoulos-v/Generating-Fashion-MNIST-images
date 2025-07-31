@@ -5,9 +5,12 @@ import numpy as np
 
 app = Flask(__name__)
 
+from flask import Flask, request, jsonify, render_template
+# ⬆ make sure render_template is imported
+
 @app.route("/", methods=["GET"])
 def index():
-    return {"message": "VAE decoder API is up and running."}
+    return render_template("index-project3.html")
 
 @app.route("/generate", methods=["POST"])
 def generate():
